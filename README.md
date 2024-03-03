@@ -99,13 +99,17 @@ or
 
 ### Harald's BT Scanner
 
-Start the bt-scanner code manually.
+Start the bt-scanner code manually. This can run on the same or another device than the display. There may be also multiple scanners.
+Remember to change the Flask server address and port in the script file!
 
     cd /opt/haralds-head/haralds-bt-scanner/
-    pip3 install -r requirements.txt
+    sudo pip3 install -r requirements.txt
     sudo python3 harald-bt-scan.py
 
-Remember to change the Flask server address and port in the script file!
+NOTE: if the bluetooth Python library from pip doesn't work, try the one from your distro's repos.
+
+    sudo pip3 uninstall pybluez2
+    sudo apt install python3-bluez
 
 If the bluetooth device gets "jammed" from lots of starting & stopping, soft cycle it down.
 

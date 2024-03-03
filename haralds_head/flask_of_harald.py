@@ -20,7 +20,7 @@ def new_device():
 
     if request.method == 'POST':
         logging.debug(request.json)
-        with open('/opt/haralds-head/scans/disobey-scanlog.txt', 'a') as f:
+        with open('/opt/haralds-head/scans/haralds-scanlog.txt', 'a') as f:
             f.write(request.json)
 
     return json.dumps({'success':True}), 200, {'ContentType':'application/json'}

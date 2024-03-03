@@ -36,14 +36,13 @@ class HaraldsEye(threading.Thread):
                 time.sleep(0.5)
             else:
                 GPIO.output(self.pin, False)
-                # GPIO.output(self.pin, self.eye_lights_up)
                 # random blink
                 if self.eyes_sync:
                     logger.debug(f"SYNC {self.pin}")
                     time.sleep(10 - time.localtime().tm_sec % 10)
                     self.eyes_sync = False
                 else:
-                    time.sleep(math.fabs(random.gauss()))
+                    time.sleep(math.fabs(random.gauss(0.0, 1.0)))
             self.eye_lights_up = not self.eye_lights_up
 
     def alert(self):
@@ -72,7 +71,7 @@ def setup():
 
 def blink():
     logger.info("blink")
-    if math.fabs(random.gauss()) > 1:
+    if math.fabs(random.gauss(0.0, 1.0)) > 1:
         for thread in threads:
             thread.sync()
 

@@ -1,7 +1,5 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-#from optparse import OptionParser
-#from random import choice
 import sys
 import time
 import os
@@ -14,12 +12,6 @@ from watchdog.events import FileSystemEventHandler
 HARALDS_GREETING_FILE = "/opt/haralds-head/haralds-greeting.txt"
 
 logger = logging.getLogger('haralds-greeting')
-
-greetings = [
-    "wow so many devices",
-    "come here"
-]
-
 
 last_phrase = None
 
@@ -51,16 +43,11 @@ observer.schedule(event_handler, path='/opt/haralds-head/', recursive=False)
 
 
 if __name__ == "__main__":
-    #parser = OptionParser()
-    #parser.add_option(
-    #    "-d", "--debug", dest="debug", action="store_true", default=False)
-
-    #(options, args) = parser.parse_args()
 
     observer.start()
 
     logging.basicConfig(
-        #filename='/home/harald/mind.log',
+        #filename='/opt/haralds-head/wall.log',
         encoding="utf-8",
         level=logging.INFO,
         format="%(asctime)s %(message)s",
