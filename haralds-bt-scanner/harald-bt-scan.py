@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 import bluetooth
 from bluetooth.ble import DiscoveryService
-#from bluepy.btle import Scanner, DefaultDelegate, BTLEDisconnectError
 from optparse import OptionParser
 import requests
 import time
@@ -41,10 +40,8 @@ class HaraldsBTScanner(object):
                 devices = bluetooth.discover_devices(duration=self.timeout, lookup_names=True)
                 for addr, name in devices:
                     # RSSI is not directly available for classic Bluetooth in PyBluez
-                    rssi = "N/A"
                     logger.info(f"Classic - Name: {name}, MAC: {addr}")
                     HaraldsBTScanner.store_scanlog({"name": name, "addr": addr})
-                #time.sleep(self.timeout)
             except Exception as e:
                 logger.warn(f"Error retrieving classic Bluetooth device info: {e}")
                 time.sleep(2)
@@ -59,7 +56,6 @@ class HaraldsBTScanner(object):
         def scan(self):
             logger.info("\x1b[34;20mScanning BLE...\x1b[0m")
             try:
-                #time.sleep(self.timeout)
                 devices = self.service.discover(self.timeout)
                 for addr, name in devices.items():
                     if name:
@@ -72,29 +68,28 @@ class HaraldsBTScanner(object):
 
     @staticmethod
     def store_scanlog(dev):
-        with open('scanlog.txt', 'a') as f:
-            logger.debug(f"POST device {dev['name']}")
+        name = dev['name']
+        if name:
+            data = '{"name": "' + f"{name}" + '", ' + \
+                    '"mac": "'  + f"{dev['addr']}" + '"}\n'
 
-            # HACK BLACKLIST
-            if re.search('Forerunner|JBL|bash', dev['name']):
-                logger.warning(f"IGNORE DEVICE {dev['name']}")
-
-            elif dev['name']:
-                name = dev['name'].replace('’', "'")
-                data = '{"name": "' + f"{name}" + '", ' + \
-                       '"mac": "'  + f"{dev['addr']}" + '"}\n'
+            # save to local txt file
+            with open('scanlog.txt', 'a') as f:
                 f.write(data)
-                # ANOTHER DIRTY HACK AGAINST EMOJIS >:[
-                if not re.match("^[a-zA-Z0-9 _-’]*$", name):
-                    logger.warning(f"IGNORE DEVICE {dev['name']}")
-                else:
-                    try:
-                        requests.post(
-                             HARALDS_FLASK_SERVER + "/haralds-scan",
-                             json=data,
-                             timeout=5.0)
-                    except Exception as err:
-                        logger.warning(f"{err}")
+
+            # send out the data to remote server, but ignore
+            # any devices with strange emojis or other simple hacking attempts
+            if not re.match("^[a-zA-Z0-9 _-–’]*$", name):
+                logger.warning(f"IGNORE device {name}")
+            else:
+                logger.debug(f"POST device {name}")
+                try:
+                    requests.post(
+                            HARALDS_FLASK_SERVER + "/haralds-scan",
+                            json=data,
+                            timeout=5.0)
+                except Exception as err:
+                    logger.warning(f"{err}")
 
 
 if __name__ == '__main__':
@@ -116,5 +111,3 @@ if __name__ == '__main__':
 
     scanner = HaraldsBTScanner(int(options.timeout))
     scanner.start()
-
-
