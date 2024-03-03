@@ -1,0 +1,14 @@
+# Copy this file into /usr/lib/systemd/system foider and enable it to run Harald's Flask
+# systemctl enable haralds-flask
+[Unit]
+Description=Harald's Flask
+After=network.target
+
+[Service]
+User=harald
+Type=simple
+RemainAfterExit=yes
+ExecStart=bash /opt/haralds-head/bin/haralds-flask.sh
+
+[Install]
+WantedBy=default.target

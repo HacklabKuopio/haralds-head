@@ -1,0 +1,5 @@
+asciimatics==1.15.0
+Mock.GPIO==0.1.8
+pyfiglet==1.0.2
+RPi.GPIO==0.7.1
+watchdog==4.0.0

@@ -1,0 +1,20 @@
+# Copy this file into /usr/lib/systemd/system foider and enable it to run Harald on tty1
+# systemctl enable haralds-wall
+[Unit]
+Description=Harald's Wall
+After=getty.target
+Conflicts=getty@tty1.service
+
+[Service]
+User=harald
+Type=simple
+RemainAfterExit=yes
+ExecStart=bash /opt/haralds-head/bin/haralds-wall.sh
+Environment="PYTHONPATH=/opt/haralds-head/"
+StandardInput=tty
+StandardOutput=tty
+StandardError=tty
+TTYPath=/dev/tty1
+
+[Install]
+WantedBy=default.target
