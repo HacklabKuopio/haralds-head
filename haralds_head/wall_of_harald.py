@@ -17,7 +17,6 @@ from asciimatics.scene import Scene
 from asciimatics.screen import Screen, ManagedScreen
 from asciimatics.exceptions import ResizeScreenError
 from asciimatics.widgets import Frame, Layout, Label
-from iteration_utilities import unique_everseen
 from optparse import OptionParser
 from random import choice
 import pyfiglet

@@ -20,7 +20,7 @@ This setup is for the main RPi with HDMI screen attached.
 
 The main haralds-head top directory should be installed or symlinked to /opt. Some paths are hardcoded to work that way.
 Remember to build and activate the Python3 venv. If you choose any other location than `/home/harald` then you
-need to reflect that change in the `bin` scripts.
+need to reflect that change in the `bin` scripts. Note: The following install commands will fail if your system's time isn't correct.
 
     sudo apt install python3 python3-pip python3-venv
     python3 -m venv /home/harald/haralds-head-env
