@@ -1,5 +1,5 @@
 #!/bin/bash
-ln -s ./ /opt/haralds-head
+ln -s /home/harald/haralds-head /opt/haralds-head
 sudo chown harald:harald /opt/haralds-head
 sudo apt update
 apt remove -y python3-rpi.gpio
@@ -13,3 +13,4 @@ sudo systemctl enable haralds-wall
 sudo systemctl enable haralds-flask
 sudo systemctl start haralds-wall
 sudo systemctl start haralds-flask
+echo "Installation of Harald dependencies done!"
